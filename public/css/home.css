@@ -1,0 +1,250 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url(../../public/assets/Home.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(6px);
+}
+
+.contenedor {
+  color: white;
+  text-align: center;
+  position: relative;
+  width: 90%;
+  max-width: 1000px;
+  min-height: 650px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  height: auto;
+  padding: 20px 25px;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+  margin: 50px auto;
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
+
+.input-contenedor {
+  position: relative;
+  margin: 20px 0;
+  width: 100%;
+  border-bottom: 2px solid #fff;
+}
+
+.input-contenedor label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: 0.6s;
+  font-weight: bold;
+}
+
+.btn{
+  color: chartreuse;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.input-contenedor input {
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0 35px 5px 10px;
+  color: #fff;
+}
+
+.input-contenedor i {
+  position: absolute;
+  color: #fff;
+  font-size: 1.6rem;
+  top: 19px;
+  right: 8px;
+}
+
+.contenedor td {
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.contenedor h1 {
+  text-align: center;
+  color: chartreuse;
+  text-transform: uppercase;
+  font-size: 2.5rem; /* Cambiado a rem */
+}
+
+.contenedor h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.contenedor .eventos th,
+.contenedor tbody {
+  color: chartreuse;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.contenedor tbody {
+  color: chartreuse;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.contenedor tbody button {
+  width: 100%;
+  height: 40px;
+  background-color: #fff;
+  border: none;
+  color: #2ad308;
+  font-weight: bold;
+  transition: 0.4s;
+  padding: 10px 20px;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contenedor .darsebaja {
+  background-color: #fff;
+  color: red;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contenedor .darsebaja:hover {
+  background-color: red;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.contenedor tbody button:hover {
+  background-color: #2ad308;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.mensaje-login {
+  background-color: rgba(130, 232, 130, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  width: 90%;
+  max-width: 600px;
+  padding: 20px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  margin-top: 40px;
+  text-align: center;
+}
+
+.mensaje-login p {
+  font-size: 1.5rem;
+}
+
+.button input {
+  width: 100%;
+  height: 40px;
+  border-radius: 45px;
+  background: #fff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  font-size: 1rem;
+  transition: 0.4s;
+  }
+  
+.button input:hover {
+ opacity: 0.9;
+ color: #2ad308;
+ }
+
+/* Pantallas medianas entre 768px y 1024px */
+@media (max-width: 1024px) {
+  .contenedor {
+    padding: 20px;
+    gap: 25px;
+  }
+
+  .contenedor h1 {
+    font-size: 2rem;
+  }
+
+  .contenedor h3 {
+    font-size: 1.1rem;
+  }
+
+  .contenedor .eventos th,
+  .contenedor tbody {
+    font-size: 1rem;
+  }
+
+  .mensaje-login p {
+    font-size: 1.3rem;
+  }
+}
+
+
+
+/* Pantallas pequeñas de hasta 768px */
+@media (max-width: 768px) {
+  .contenedor {
+    padding: 15px;
+    margin-top: 30px;
+    gap: 20px;
+  }
+
+  .contenedor h1 {
+    font-size: 1.8rem;
+  }
+
+  .contenedor h3 {
+    font-size: 1rem;
+  }
+
+  .contenedor .eventos th,
+  .contenedor tbody {
+    font-size: 0.9rem;
+  }
+
+  .contenedor tbody button {
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .mensaje-login p {
+    font-size: 1.2rem;
+  }
+}
