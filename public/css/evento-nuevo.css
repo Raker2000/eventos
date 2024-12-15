@@ -25,6 +25,23 @@ background-size: cover;
 padding: 20px;
 }
 
+#map-container {
+  width: 100%; /* Ajusta el ancho del contenedor */
+  margin: 0 auto; /* Centra el contenedor */
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 10px;
+  background-color: black;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+/* Mapa dentro del contenedor */
+#map {
+  height: 500px;
+  width: 100%; /* Hace que el mapa ocupe todo el ancho del contenedor */
+}
+
 .contenedor {
   color: white;
   text-align: center;
@@ -88,6 +105,13 @@ padding: 20px;
   text-align: center;
 }
 
+.contenedor h1{
+  position: relative;
+  margin: 10px;
+  color: #fff;
+  text-align: center;
+}
+
 .contenedor h2 {
   margin: 20px;
   font-size: 2rem;
@@ -106,11 +130,8 @@ padding: 20px;
   position: absolute;
   top: 50%;
   left: 10px;
-  transform: translateY(-50%);
   color: #fff;
   font-size: 1rem;
-  pointer-events: none;
-  transition: 0.6s;
   font-weight: bold;
 }
 
@@ -135,49 +156,55 @@ right: 8px;
 
 
 .fecha::-webkit-datetime-edit {
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
 }
 
 
 .fecha::-webkit-calendar-picker-indicator {
     display: none;
+    text-align: center;
 }
 
 .fecha::-ms-clear {
     display: none;
+    text-align: center;
 }
 
 .fecha::-moz-clear {
     display: none;
+    text-align: center;
 }
 
 
 input[type="time"] {
-    padding: 10px 10px 10px 40px; 
-    color: #fff; 
-    font-size: 18px; 
-    font-weight: bold; 
-    font-family: Arial, Helvetica, sans-serif; 
-    text-transform: uppercase; 
-    background-color: transparent; 
-    width: 150px;
-    appearance: none; 
-    -moz-appearance: none;
-    -webkit-appearance: none;
+  color: #fff; 
+  font-size: 18px; 
+  font-weight: bold; 
+  font-family: Arial, Helvetica, sans-serif; 
+  text-transform: uppercase; 
+  background-color: transparent; 
+  width: 150px;
+  appearance: none; 
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
 }
 
 input[type="time"]::-webkit-inner-spin-button,
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
+    text-align: center;
 }
 
 input[type="time"]:focus {
     border-color: #fff; 
     outline: none;
+    text-align: center;
 }
 
 .input-contenedor select {

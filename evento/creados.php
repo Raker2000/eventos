@@ -52,7 +52,6 @@ $stmt->close();
                         <th>Nombre del Evento</th>
                         <th>Fecha</th>
                         <th>Horario</th>
-                        <th>Tipo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,7 +60,6 @@ $stmt->close();
                             <td><?= $event['nombre'] ?></td>
                             <td><?= $event['fecha'] ?></td>
                             <td><?= $event['horario'] ?></td>
-                            <td><?= $event['tipo'] ?></td>
                             <td>
                                 <form method="post" action="<?= constant('ROOT_URL') ?>/evento/editar.php">
                                     <input type="hidden" name="event_id" value="<?= $event['id'] ?>">

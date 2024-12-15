@@ -83,7 +83,7 @@ if ($conexion->connect_error) {
 
 <?php
 // Obtener eventos
-$sql = "SELECT id, nombre, fecha, horario, tipo, id_creador, inscriptos FROM eventos WHERE (eventos.fecha) >= CURDATE() ORDER BY fecha, horario";
+$sql = "SELECT id, nombre, fecha, horario, id_creador, inscriptos FROM eventos WHERE (eventos.fecha) >= CURDATE() ORDER BY fecha, horario";
 $resultado = $conexion->query($sql);
 
 // Obtener eventos a los que el usuario está inscrito
@@ -100,7 +100,6 @@ while ($row = $result->fetch_assoc()) {
 // Guardar los datos de los eventos en un arreglo para pasarlos a JavaScript
 $eventos = [];
 while ($row = $resultado->fetch_assoc()) {
-    $tipo = htmlspecialchars($row['tipo']);
     $id_creador = htmlspecialchars($row['id_creador']);
     $nombreEvento = htmlspecialchars($row['nombre']);
     $fechaEvento = htmlspecialchars($row['fecha']);
@@ -123,7 +122,6 @@ while ($row = $resultado->fetch_assoc()) {
         'creador' => $nombre_usuario,
         'fecha' => $fechaEvento,
         'horario' => $horarioEvento,
-        'tipo' => $tipo,
         'inscriptos' => $cantidad_inscriptos,
         'id_evento' => $id_evento,
         'inscrito' => in_array($id_evento, $eventosInscritos) ? true : false
@@ -166,7 +164,6 @@ function actualizarTabla(eventosOrdenados) {
             <td>${evento.creador}</td>
             <td>${evento.fecha}</td>
             <td>${evento.horario}</td>
-            <td>${evento.tipo}</td>
             <td>${evento.inscriptos}</td>
             <td>
                 ${evento.inscrito ? 
@@ -209,7 +206,6 @@ window.onload = function() {
                     <th><button class="btn" onclick="ordenarEventos('creador')">Creador</button></th>
                     <th><button class="btn" onclick="ordenarEventos('fecha')">Fecha</button></th>
                     <th><button class="btn" onclick="ordenarEventos('horario')">Horario</button></th>
-                    <th><button class="btn" onclick="ordenarEventos('tipo')">Tipo</button></th>
                     <th><button class="btn" onclick="ordenarEventos('inscriptos')">Inscriptos</button></th>
                     <th>Inscripción</th>
                 </tr>

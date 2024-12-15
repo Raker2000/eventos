@@ -34,7 +34,7 @@ if (isset($_POST) && isset($_POST['event_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" href="<?= constant('ROOT_URL'); ?>/public/assets/icono.ico" type="image/x-icon">
     <title>Editar evento</title>
-    <link rel="stylesheet" href="<?= constant('ROOT_URL'); ?>/public/css/evento.css">
+    <link rel="stylesheet" href="<?= constant('ROOT_URL'); ?>/public/css/evento-nuevo.css">
 </head>
 
 <body>
@@ -43,46 +43,116 @@ if (isset($_POST) && isset($_POST['event_id'])) {
     <section>
         <div class="contenedor">
             <div class="formulario">
-                <form name="formulario" method="post" action="<?= constant('ROOT_URL') ?>/src/procesoEditar.php">
-                    <h2>Editar Evento</h2>
+
+
+            <form name="formulario" method="post" action="<?= constant('ROOT_URL') ?>/src/procesoEditar.php">
+                <h2>Editar Evento</h2>
                     <!-- Input oculto que envía el valor del token a la solicitud POST -->
                     <input type="hidden" name="token" value="<?= $token ?>">
                     <input type="hidden" name="event_id" value="<?= $eventId ?>">
                     <div class="input-contenedor">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="text" name="nombre" required value="<?= $event['nombre'] ?? "" ?>">
-                        <label for="#">Nombre</label>
+                        <h1>Nombre</h1>
+                        <input type="text" name="nombre" required id="nombre" placeholder="Nombre del evento" required value="<?= $event['nombre'] ?? "" ?>">
                     </div>
 
                     <div class="input-contenedor">
-                        <i class="bi bi-calendar" id="calendar-icon"></i>
+                        <h1>Descripcion</h1>
+                        <input type="text" name="descripcion" id="descripcion" placeholder="Descripción del evento" required value="<?= $event['descripcion'] ?? "" ?>">
+                    </div>
+
+                    <div class="input-contenedor">
+                        <h1>Fecha</h1>
                         <input class="fecha" type="date" name="fecha" required value="<?= $event['fecha'] ?? "" ?>">
-                        <!-- <label for="#">Fecha</label> -->
                     </div>
 
                     <div class="input-contenedor">
-                        <i class="fa-solid fa-clock"></i>
+                        <h1>Hora</h1>
                         <input type="time" name="hora" required value="<?= $event['horario'] ?? "" ?>">
-                        <!-- <label for="#">Hora</label> -->
+                        
                     </div>
+                        <h1>Ubicación del Evento</h1>
 
-                    <div class="input-contenedor">
-                        <i class="fas fa-medal"></i>
-                        <select name="tipo">
-                            <option value="1" <?= (isset($event) && $event['tipo'] == "1") ? "selected" : "" ?>>Futbol</option>
-                            <option value="2" <?= (isset($event) && $event['tipo'] == "2") ? "selected" : "" ?>>Basquet</option>
-                            <option value="3" <?= (isset($event) && $event['tipo'] == "3") ? "selected" : "" ?>>Handball</option>
-                        </select>
+                    <div class="input-contenedor" id="map-container">
+                        <div id="map"></div>
                     </div>
+                    <input type="hidden" id="latitud" name="latitud" required value="<?= $event['latitud'] ?? "" ?>" />
+                    <input type="hidden" id="longitud" name="longitud" required value="<?= $event['longitud'] ?? "" ?>"/>
+
+                    <div class="h-captcha" data-sitekey="ca1cb826-038a-462c-afba-8f88601e6002"></div>
 
                     <div class="button">
                         <input type="submit" value="Editar" />
                     </div>
-
                 </form>
             </div>
         </div>
     </section>
+
+
+
+    <!-- Coordenadas del marcador -->
+    <p id="coordinates"></p>
+
+    <div id="map"></div>
+
+    <script>
+        // Coordenadas iniciales
+        var latitud = -31.74129446517877;
+        var longitud = -60.511320020982474;
+
+        // Inicializar el mapa
+        var map = L.map('map').setView([latitud, longitud], 13);
+
+        // Agregar tiles de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Crear un marcador arrastrable
+        var marker = L.marker([latitud, longitud], { draggable: true }).addTo(map)
+            .bindPopup('Arrastre el pin al lugar del evento')
+            .openPopup();
+
+        // Actualizar las coordenadas al mover el marcador
+        marker.on('dragend', function (e) {
+            var position = marker.getLatLng(); // Obtener nueva posición
+            latitud = position.lat;
+            longitud = position.lng;
+            // Actualizar el popup con las coordenadas actuales
+            marker.bindPopup(`Evento: ${document.getElementById('nombre').value || 'Sin nombre'}<br>Descripcion: ${document.getElementById('descripcion').value}`).openPopup();
+            updatePinName();
+        });
+
+        // Función para actualizar el nombre del pin
+        function updatePinName() {
+            // Obtener el nuevo nombre del pin desde el input
+            var newName = document.getElementById('nombre').value;
+            var description = document.getElementById('descripcion').value;
+
+            document.getElementById('latitud').value = latitud;
+            document.getElementById('longitud').value = longitud;
+
+            // Validar que no esté vacío
+            if (newName.trim() === '') {
+                alert('El nombre del pin no puede estar vacío.');
+                return;
+            }
+
+            // Actualizar el popup del marcador con el nuevo nombre
+            marker.bindPopup(`Evento: ${newName}<br>Descripcion: ${document.getElementById('descripcion').value}`).openPopup();
+        }
+
+        document.getElementById('nombre').addEventListener('input', function () {
+            updatePinName();
+        });
+        document.getElementById('descripcion').addEventListener('input', function () {
+            updatePinName();
+        });
+    </script>
+
+
+
     <!-- cargar footer -->
     <?php require('../src/components/footer.component.php') ?>
 </body>
