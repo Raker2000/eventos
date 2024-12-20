@@ -1,4 +1,5 @@
 <?php
+//ESTE FUNCIONA
 //Se crea y agrega un token sencillo a la session.
 require('../src/config.php');
 require('../src/utils/protectRoute.php');
@@ -31,10 +32,15 @@ if (isset($_POST) && isset($_POST['event_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/ba42bd5e6b.js" crossorigin="anonymous"></script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" href="<?= constant('ROOT_URL'); ?>/public/assets/icono.ico" type="image/x-icon">
-    <title>Editar evento</title>
+    <title>Nuevo evento</title>
     <link rel="stylesheet" href="<?= constant('ROOT_URL'); ?>/public/css/evento-nuevo.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 </head>
 
 <body>
@@ -43,13 +49,19 @@ if (isset($_POST) && isset($_POST['event_id'])) {
     <section>
         <div class="contenedor">
             <div class="formulario">
-
-
-            <form name="formulario" method="post" action="<?= constant('ROOT_URL') ?>/src/procesoEditar.php">
-                <h2>Editar Evento</h2>
+                <form name="formulario" method="post" action="<?= constant('ROOT_URL') ?>/src/procesoEditar.php">
+                    <?php
+                    //Si existe un error (se fija en la url)..
+                    if (isset($_GET['error']) && $_GET['error'] === 'true') { ?>
+                        <div class="error-contenedor">
+                            <p>Error al crear el evento, intenta nuevamente</p>
+                        </div>
+                    <?php } ?>
+                    <h2>Editar Evento</h2>
                     <!-- Input oculto que envía el valor del token a la solicitud POST -->
-                    <input type="hidden" name="token" value="<?= $token ?>">
                     <input type="hidden" name="event_id" value="<?= $eventId ?>">
+                    <input type="hidden" name="token" value="<?= $token ?>">
+
                     <div class="input-contenedor">
                         <h1>Nombre</h1>
                         <input type="text" name="nombre" required id="nombre" placeholder="Nombre del evento" required value="<?= $event['nombre'] ?? "" ?>">
@@ -62,12 +74,12 @@ if (isset($_POST) && isset($_POST['event_id'])) {
 
                     <div class="input-contenedor">
                         <h1>Fecha</h1>
-                        <input class="fecha" type="date" name="fecha" required value="<?= $event['fecha'] ?? "" ?>">
+                        <input class="fecha" type="date" name="fecha" required required value="<?= $event['fecha'] ?? "" ?>">
                     </div>
 
                     <div class="input-contenedor">
                         <h1>Hora</h1>
-                        <input type="time" name="hora" required value="<?= $event['horario'] ?? "" ?>">
+                        <input type="time" name="hora" required required value="<?= $event['horario'] ?? "" ?>">
                         
                     </div>
                         <h1>Ubicación del Evento</h1>
@@ -75,7 +87,7 @@ if (isset($_POST) && isset($_POST['event_id'])) {
                     <div class="input-contenedor" id="map-container">
                         <div id="map"></div>
                     </div>
-                    <input type="hidden" id="latitud" name="latitud" required value="<?= $event['latitud'] ?? "" ?>" />
+                    <input type="hidden" id="latitud" name="latitud" required value="<?= $event['latitud'] ?? "" ?>"/>
                     <input type="hidden" id="longitud" name="longitud" required value="<?= $event['longitud'] ?? "" ?>"/>
 
                     <div class="h-captcha" data-sitekey="ca1cb826-038a-462c-afba-8f88601e6002"></div>
@@ -87,8 +99,7 @@ if (isset($_POST) && isset($_POST['event_id'])) {
             </div>
         </div>
     </section>
-
-
+    
 
     <!-- Coordenadas del marcador -->
     <p id="coordinates"></p>
@@ -97,8 +108,8 @@ if (isset($_POST) && isset($_POST['event_id'])) {
 
     <script>
         // Coordenadas iniciales
-        var latitud = -31.74129446517877;
-        var longitud = -60.511320020982474;
+        var latitud = document.getElementById('latitud').value;
+        var longitud = document.getElementById('longitud').value;
 
         // Inicializar el mapa
         var map = L.map('map').setView([latitud, longitud], 13);
@@ -149,6 +160,12 @@ if (isset($_POST) && isset($_POST['event_id'])) {
         document.getElementById('descripcion').addEventListener('input', function () {
             updatePinName();
         });
+        document.getElementById('fecha').addEventListener('input', function () {
+            updatePinName();
+        });
+        document.getElementById('hora').addEventListener('input', function () {
+            updatePinName();
+        });
     </script>
 
 
@@ -170,7 +187,6 @@ if (isset($_SESSION['nuevoAlert'])) {
     $_SESSION['nuevoAlert'] = null;
     session_write_close();
 }
-$conexion->close();
 ?>
 
 </html>
