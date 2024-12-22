@@ -83,7 +83,7 @@ if ($conexion->connect_error) {
 
 <?php
 // Obtener eventos
-$sql = "SELECT id, nombre, fecha, horario, id_creador, inscriptos FROM eventos WHERE (eventos.fecha) >= CURDATE() ORDER BY fecha, horario";
+$sql = "SELECT id, nombre, fecha, horario, visibilidad, id_creador, inscriptos FROM eventos WHERE (eventos.fecha) >= CURDATE() ORDER BY fecha, horario";
 $resultado = $conexion->query($sql);
 
 // Obtener eventos a los que el usuario está inscrito
@@ -97,6 +97,7 @@ while ($row = $result->fetch_assoc()) {
     $eventosInscritos[] = $row['id_evento'];
 }
 
+//var_dump($_SESSION);
 // Guardar los datos de los eventos en un arreglo para pasarlos a JavaScript
 $eventos = [];
 while ($row = $resultado->fetch_assoc()) {
@@ -106,7 +107,7 @@ while ($row = $resultado->fetch_assoc()) {
     $horarioEvento = htmlspecialchars($row['horario']);
     $id_evento = htmlspecialchars($row['id']);
     $cantidad_inscriptos = htmlspecialchars($row['inscriptos']);
-
+    
     // Obtener el nombre del creador
     $stmt = $conexion->prepare("SELECT nombre_usuario FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $id_creador);
@@ -115,7 +116,12 @@ while ($row = $resultado->fetch_assoc()) {
     if ($fila = $ress->fetch_assoc()) {
         $nombre_usuario = $fila['nombre_usuario'];
     }
+    
+    
 
+    if(htmlspecialchars($row['visibilidad']) && $id_creador != $_SESSION['id_usuario']){
+        continue;
+    }
     // Crear un arreglo para cada evento
     $eventos[] = [
         'nombre' => $nombreEvento,
@@ -126,6 +132,7 @@ while ($row = $resultado->fetch_assoc()) {
         'id_evento' => $id_evento,
         'inscrito' => in_array($id_evento, $eventosInscritos) ? true : false
     ];
+    
 }
 
 $eventosJson = json_encode($eventos);
@@ -141,8 +148,8 @@ function ordenarEventos(columna) {
 
     // Ordenar según la columna seleccionada
     eventosOrdenados.sort((a, b) => {
-        if (a[columna] < b[columna]) return -1;
-        if (a[columna] > b[columna]) return 1;
+        if (a[columna] < b[columna]) return 1;
+        if (a[columna] > b[columna]) return -1;
         return 0;
     });
 
@@ -165,6 +172,7 @@ function actualizarTabla(eventosOrdenados) {
             <td>${evento.fecha}</td>
             <td>${evento.horario}</td>
             <td>${evento.inscriptos}</td>
+            <td><button>Ver</button></td>
             <td>
                 ${evento.inscrito ? 
                     `<button class="darsebaja" onclick="eliminarInscripcion('${idUsuario}','${evento.id_evento}')">Darse de baja</button>` :
@@ -198,7 +206,7 @@ window.onload = function() {
     <main class="contenedor">
         <h1>Bienvenido!</h1>
 
-        <h3>Listado de Eventos</h3>
+        <h3>Listado de eventos</h3>
         <table>
             <thead class="eventos">
                 <tr>
@@ -207,6 +215,7 @@ window.onload = function() {
                     <th><button class="btn" onclick="ordenarEventos('fecha')">Fecha</button></th>
                     <th><button class="btn" onclick="ordenarEventos('horario')">Horario</button></th>
                     <th><button class="btn" onclick="ordenarEventos('inscriptos')">Inscriptos</button></th>
+                    <th>Detalles</th>
                     <th>Inscripción</th>
                 </tr>
             </thead>

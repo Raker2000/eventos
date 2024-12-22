@@ -8,6 +8,8 @@ if (isset($_POST)) {
     $fecha = $_POST['fecha'];
     $hora = $_POST['hora'];
     $descripcion = $_POST['descripcion'];
+    $contrasenia = $_POST['pass'];
+    $privacidad = $_POST['vis'];
     $latitud = $_POST['latitud'];
     $longitud = $_POST['longitud'];
 
@@ -17,17 +19,20 @@ if (isset($_POST)) {
     $fecha = isset($_POST['fecha']) ? (string) $_POST['fecha'] : '';
     $hora = isset($_POST['hora']) ? (string) $_POST['hora'] : '';
     $descripcion = isset($_POST['descripcion']) ? (string) $_POST['descripcion'] : '';
+    $contrasenia = isset($_POST['pass']) ? (string) $_POST['pass'] : '';
+    $privacidad = isset($_POST['vis']) ? (string) $_POST['vis'] : '';
     $latitud = isset($_POST['latitud']) ? (string) $_POST['latitud'] : '';
     $longitud = isset($_POST['longitud']) ? (string) $_POST['longitud'] : '';
 
-    if ($nombre && $fecha && $hora && $latitud && $longitud && $condicionToken && verifyCaptcha()) {
+    if ($nombre && $fecha && $hora && $latitud && $longitud && $condicionToken) {
         try {
             $conexion = new mysqli(constant('DB_HOST'), constant('DB_USER'), constant('DB_PASS'), constant('DB_NAME'), constant('DB_PORT') ?? null);
-            $sql = "INSERT INTO eventos (nombre, descripcion, fecha, horario, latitud, longitud, id_creador, inscriptos) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO eventos (nombre, descripcion, fecha, horario, visibilidad, contrasenia, latitud, longitud, id_creador, inscriptos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $userId = $_SESSION['id_usuario'];
             $stmt = $conexion->prepare($sql);
             $UNO = 1; //ESTO ES PORQUE EL CREADOR DEL EVENTO SE INSCRIBE AUTOMATICAMENTE
-            $stmt->bind_param('ssssssii', $nombre, $descripcion, $fecha, $hora, $latitud, $longitud, $userId, $UNO);
+            $passwordHasheada = password_hash($contrasenia, PASSWORD_DEFAULT);
+            $stmt->bind_param('ssssisssii', $nombre, $descripcion, $fecha, $hora, $privacidad, $passwordHasheada, $latitud, $longitud, $userId, $UNO);
             $stmt->execute();
             $eventId = $conexion->insert_id;
             $sql = "INSERT INTO usuarios_eventos (id_usuario, id_evento) VALUES (?, ?)";

@@ -60,7 +60,6 @@ if (isset($_POST)) {
         $conexion->close();
     } catch (Error $e) {
         //redirecciona al la vista register.php
-        var_dump($e);
-        // header('Location: ' . constant('ROOT_URL') . '/register.php');
+        header('Location: ' . constant('ROOT_URL') . '/register.php');
     }
 }

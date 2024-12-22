@@ -14,6 +14,7 @@
         if (isset($_SESSION['userLogged']) && isset($_SESSION['username'])) { ?>
             <div class="user-info">
                 <a href="<?= constant('ROOT_URL') ?>/">Inicio</a>
+                <a href="<?= constant('ROOT_URL') ?>/map.php">Mapa</a>
                 <a href="<?= constant('ROOT_URL') ?>/evento/creados.php">Mis Eventos</a>
                 <a href="<?= constant('ROOT_URL') ?>/user.php"> <?= $_SESSION['username']; ?> <i class="fa fa-user-circle-o" aria-hidden="true"></i> </a>
             </div>

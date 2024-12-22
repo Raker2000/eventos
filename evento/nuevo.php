@@ -43,6 +43,7 @@ $_SESSION['token'] = (string)$token;
                         </div>
                     <?php } ?>
                     <h2>Crear Nuevo Evento</h2>
+                    <div class="input-contenedor"></div>
                     <!-- Input oculto que envía el valor del token a la solicitud POST -->
                     <input type="hidden" name="token" value="<?= $token ?>">
 
@@ -66,11 +67,30 @@ $_SESSION['token'] = (string)$token;
                         <input type="time" name="hora" required>
                         
                     </div>
-                        <h1>Ubicación del Evento</h1>
+
+                    <div>
+                        <h1>Visibilidad</h1>
+                        <select name="vis" id="vis">
+                            <option value="0">Publico</option>
+                            <option value="1">Privado</option>
+                        </select>
+                    </div>
+
+                    <div class="input-contenedor"></div>
+
+                    <div class="input-contenedor">
+                        <h1>Contraseña</h1>
+                        <input type="text" id="pass" name="pass" placeholder="Contraseña del evento"></input>
+                    </div>
+
+                    <h1>Ubicación del Evento</h1>
 
                     <div class="input-contenedor" id="map-container">
+                        
                         <div id="map"></div>
                     </div>
+
+                    
                     <input type="hidden" id="latitud" name="latitud" />
                     <input type="hidden" id="longitud" name="longitud" />
 
